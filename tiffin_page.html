@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breakfast Menu</title>
+    <link rel="stylesheet" href="tiffin_page1.css"> <!-- Link to CSS file -->
+</head>
+<body>
+    <div class="container">
+        <!-- Menu section that lists breakfast items -->
+        <div class="menu-section">
+            <h1>Breakfast Items</h1>
+            <div class="menu-grid">
+                <!-- Menu item 1: Idli -->
+                <div class="menu-item">
+                    <img src="tiffin_img/idli.jpg" alt="Idli">
+                    <div class="item-details">
+                        <h2>Idli</h2>
+                        <p class="price">$2.00</p>
+                        <button class="add-to-cart" data-item="Idli" data-price="2.00">Add to Cart</button>
+                    </div>
+                </div>
+                <!-- Menu item 2: Dosa -->
+                <div class="menu-item">
+                    <img src="tiffin_img/dosa.jpg" alt="Dosa">
+                    <div class="item-details">
+                        <h2>Dosa</h2>
+                        <p class="price">$3.50</p>
+                        <button class="add-to-cart" data-item="Dosa" data-price="3.50">Add to Cart</button>
+                    </div>
+                </div>
+                <!-- Menu item 3: Sambar Vada -->
+                <div class="menu-item">
+                    <img src="tiffin_img/vada.jpg" alt="Sambar Vada">
+                    <div class="item-details">
+                        <h2>Sambar Vada</h2>
+                        <p class="price">$2.50</p>
+                        <button class="add-to-cart" data-item="Sambar Vada" data-price="2.50">Add to Cart</button>
+                    </div>
+                </div>
+                <!-- Menu item 4: Poori -->
+                <div class="menu-item">
+                    <img src="tiffin_img/poori.jpg" alt="Poori">
+                    <div class="item-details">
+                        <h2>Poori</h2>
+                        <p class="price">$4.00</p>
+                        <button class="add-to-cart" data-item="Poori" data-price="4.00">Add to Cart</button>
+                    </div>
+                </div>
+                <!-- Menu item 5: Bonda -->
+                <div class="menu-item">
+                    <img src="tiffin_img/donda.jpg" alt="Bonda">
+                    <div class="item-details">
+                        <h2>Bonda</h2>
+                        <p class="price">$1.50</p>
+                        <button class="add-to-cart" data-item="Bonda" data-price="1.50">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cart Section -->
+                <div class="cart-section">
+                    <h2>Your Cart (<span id="cart-count">0</span>)</h2>
+                    <div id="cart-items">
+                        <!-- Dynamic Cart Items Will Be Added Here -->
+                    </div>
+                    <div id="total-price" class="total-price">$0.00</div>
+                    <button id="checkout-btn" class="checkout-btn">Checkout</button>
+                </div>
+
+
+    <!-- Link to JavaScript file -->
+    <script src="tiffin_page.js"></script>
+</body>
+</html>
