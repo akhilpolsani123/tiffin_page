@@ -1,5 +1,11 @@
+// Retrieve cart data from localStorage or initialize with empty values
 const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-let totalPrice = parseFloat(localStorage.getItem('totalPrice')) || 0;
+let totalPrice = 0; // Initialize to 0 for a fresh start
+
+// Calculate total price from cart items in localStorage
+cartItems.forEach(item => {
+    totalPrice += item.price * item.quantity;
+});
 
 // Function to add event listeners to "Add to Cart" buttons
 document.querySelectorAll('.add-to-cart').forEach(button => {
@@ -7,9 +13,21 @@ document.querySelectorAll('.add-to-cart').forEach(button => {
         const itemName = button.getAttribute('data-item');
         const itemPrice = parseFloat(button.getAttribute('data-price'));
 
-        // Add item to cart
-        cartItems.push({ name: itemName, price: itemPrice });
+        // Check if the item already exists in the cart
+        const existingItem = cartItems.find(item => item.name === itemName);
+
+        if (existingItem) {
+            // If the item exists, increase its quantity
+            existingItem.quantity += 1;
+        } else {
+            // If it's a new item, add it to the cart with quantity 1
+            cartItems.push({ name: itemName, price: itemPrice, quantity: 1 });
+        }
+
+        // Update the total price
         totalPrice += itemPrice;
+
+        // Update the cart UI
         updateCart();
     });
 });
@@ -23,41 +41,55 @@ function updateCart() {
     // Update cart count
     cartCount.textContent = cartItems.length;
 
-    // Display cart items with remove buttons
+    // Display cart items with quantity controls (no remove button)
     cartItemsDiv.innerHTML = cartItems.map((item, index) => `
         <div class="cart-item">
             <p>${item.name}: $${item.price.toFixed(2)}</p>
-            <button class="remove-item" data-index="${index}">Remove</button>
+            <div class="quantity-controls">
+                <button class="decrease" data-index="${index}">−</button>
+                <span>${item.quantity}</span>
+                <button class="increase" data-index="${index}">+</button>
+            </div>
         </div>
     `).join('');
 
+    // Update the total price
     totalPriceDiv.textContent = `Total: $${totalPrice.toFixed(2)}`;
 
     // Save updated cart items and total price to localStorage
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
     localStorage.setItem('totalPrice', totalPrice);
-}
 
-// Function to remove an item from the cart
-function removeItem(index) {
-    const itemPrice = cartItems[index].price;
-    cartItems.splice(index, 1); // Remove item from array
-    totalPrice -= itemPrice; // Adjust total price
-    updateCart(); // Update the cart UI
-}
+    // Add event listeners for quantity controls
+    document.querySelectorAll('.increase').forEach(button => {
+        button.addEventListener('click', () => {
+            const index = button.getAttribute('data-index');
+            cartItems[index].quantity += 1;
+            totalPrice += cartItems[index].price;
+            updateCart();
+        });
+    });
 
-// Add event listener for "Remove" buttons
-document.getElementById('cart-items').addEventListener('click', (event) => {
-    if (event.target.classList.contains('remove-item')) {
-        const index = event.target.getAttribute('data-index');
-        removeItem(index);
-    }
-});
+    document.querySelectorAll('.decrease').forEach(button => {
+        button.addEventListener('click', () => {
+            const index = button.getAttribute('data-index');
+            if (cartItems[index].quantity > 1) {
+                cartItems[index].quantity -= 1;
+                totalPrice -= cartItems[index].price;
+            } else {
+                // Remove the item if quantity is 1 and decrease button is pressed
+                totalPrice -= cartItems[index].price;
+                cartItems.splice(index, 1);
+            }
+            updateCart();
+        });
+    });
+}
 
 // Checkout button functionality
 document.getElementById('checkout-btn').addEventListener('click', () => {
     if (cartItems.length > 0) {
-        window.location.href = 'tiffin_checkout.html'; // Link to your checkout page
+        window.location.href = 'tiffin_checkout.html'; // Redirect to your checkout page
     } else {
         alert('Your cart is empty.');
     }
